@@ -3,12 +3,23 @@
     <div class='map' id="allmap"></div>
     <div class='detail'>
         <div class='info'>
-            <p class='title'>机器人餐厅1(碧桂园总部店)<span>距离15km</span> </p>
-            <p class='dec'>营业： 00:00-23:00</p>
-            <p class='dec addr'>地址： 佛山市顺德区北窖镇顺德碧桂园大道1号   <span class='phone'><img src="../assets/images/phone.png" alt=""></span>   </p>
-            <p class='dec'>等位： 12桌【小桌】8桌【中桌】10【大桌】</p>
+             <router-link :to="'/index/shopList'"><p class='title'>机器人餐厅1(碧桂园总部店) <img src="../assets/images/down.png" alt=""></p></router-link>  
+            <p class='dec addr'>营业： 00:00-23:00 <span class='dist'>距离15km</span>    <span class='phone'><img src="../assets/images/phone.png" alt=""></span>    </p>
+            <p class='dec'>地址： 佛山市顺德区北窖镇顺德碧桂园大道1号</p>
+            <div class='waiting'>
+                <p>正在等位</p>
+                <p class='type'>【小桌】12桌</p>
+                <p class='type'>【中桌】10桌</p>
+                <p class='type'>【大桌】10桌</p>
+            </div>
         </div>
-        <div class='route'>查看路线</div>
+        <div class='queueBtn'>
+           <router-link :to="'/index/queue'">
+           <div>
+                排队取号
+           </div>
+           </router-link>
+        </div>
     </div>
 </div>
 </template>
@@ -16,7 +27,7 @@
 import BMap from "BMap";
 export default {
   mounted() {
-    this.$store.commit("UPDATE_PAGE_TITLE", "门店详情");
+    this.$store.commit("UPDATE_PAGE_TITLE", "取号");
     this.$store.commit("UPDATE_HEAD", true);
     this.$store.commit("UPDATE_FOOTER", false);
      this.ready();
@@ -62,13 +73,12 @@ export default {
   height: 100%;
 }
 .map {
-  height: 100%;
+  height: calc(~"100vh - 360px");
   width: 100%;
-  padding-bottom: 200px;
   overflow: hidden;
 }
 .detail {
-  height: 186px;
+  height: 310px;
   background: #fff;
   position: absolute;
   width: 100%;
@@ -83,17 +93,24 @@ export default {
   overflow: hidden;
   height: 30px;
   line-height: 30px;
-  span {
+  color:#333;
+    img{
+            width: 12px;
+    margin-left: 10px;
+
+    }
+}
+ .dist {
     float: right;
     font-size: 14px;
     color: #929292;
+    padding-right: 5px;
   }
-}
 .dec {
   font-size: 14px;
   color: #929292;
-  height: 25px;
-  line-height: 25px;
+  height: 30px;
+  line-height: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -114,12 +131,30 @@ export default {
         }
     }
 }
+.waiting{
+        margin-top: 10px;
+    border-top: 1px solid #f2f2f2;
+    p{
+        height: 30px;
+    line-height: 30px;
+    padding-left: 10px; 
+    }
+    p:first-child{
+     height: 40px;
+    line-height: 40px;
+    }
+}
 
-.route {
+.queueBtn {
   background-image: linear-gradient(-180deg, #fdc135 0%, #fa8829 100%);
   height: 50px;
   text-align: center;
-  line-height: 50px;
-  color: #fff;
+      line-height: 50px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  a{
+      color: #fff
+  }
 }
 </style>

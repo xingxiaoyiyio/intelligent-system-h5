@@ -8,6 +8,13 @@ import Menu from '@/components/Menu'
 import ShopList from '@/components/ShopList'
 import KeyLogin from '@/components/KeyLogin'
 import ShopDetail from '@/components/ShopDetail'
+import NewsList from '@/components/NewsList'
+import NewsDetail from '@/components/NewsDetail'
+import ShareList from '@/components/ShareList'
+import EvaluateDetail from '@/components/EvaluateDetail'
+import Queue from '@/components/Queue'
+import ShopQueue from '@/components/ShopQueue'
+
 
 Vue.use(Router)
 
@@ -57,6 +64,36 @@ export default new Router({
 				path: '/index/shopDetail',
 				name: 'shopDetail',
 				component: ShopDetail,
+      },
+      {
+				path: '/index/newsList',
+				name: 'newsList',
+				component: NewsList,
+      },
+      {
+				path: '/index/newsDetail',
+				name: 'newsDetail',
+				component: NewsDetail,
+      },
+      {
+				path: '/index/shareList',
+				name: 'shareList',
+				component: ShareList,
+      },
+      {
+				path: '/index/evaluateDetail',
+				name: 'evaluateDetail',
+				component: EvaluateDetail,
+      },
+      {
+				path: '/index/queue',
+				name: 'queue',
+				component: Queue,
+      },
+      {
+				path: '/index/shopQueue',
+				name: 'shopQueue',
+				component: ShopQueue,
       }
     ],
     
