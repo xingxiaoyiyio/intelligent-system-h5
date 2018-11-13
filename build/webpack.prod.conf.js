@@ -22,6 +22,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
+  externals: {
+    'BMap': 'BMap'
+  },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,

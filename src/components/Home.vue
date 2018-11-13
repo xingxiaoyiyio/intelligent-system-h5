@@ -2,7 +2,7 @@
     <div class='home'>
       <div class='homeTop'>
           <div class='left'></div>
-            <router-link :to="'/index/shopList'">
+            <router-link :to="'/index/shopCity'">
                 <div class='mid'>
                     <span class='loc'></span>
                     <span>碧桂园总部店</span>
@@ -21,7 +21,6 @@
                         <p>点餐</p>
                     </router-link>
                 </div>
-          
           <div class='entericon'>
              <router-link :to="'/index/shopQueue'">
                 <div class='menu-icon'>
@@ -31,16 +30,20 @@
               </router-link>
           </div>
           <div class='entericon'>
-              <div class='menu-icon'>
-                   <img src="../assets/images/home_check.png" alt="">
-              </div>
-              <p>预定</p>
+              <router-link :to="'/index/book'">
+                <div class='menu-icon'>
+                    <img src="../assets/images/home_check.png" alt="">
+                </div>
+                <p>预定</p>
+              </router-link>
           </div>
           <div class='entericon'>
-              <div class='menu-icon'>
-                   <img src="../assets/images/home_check.png" alt="">
-              </div>
-              <p>外卖</p>
+             <router-link :to="'/index/takeOut'">
+                <div class='menu-icon'>
+                    <img src="../assets/images/home_check.png" alt="">
+                </div>
+                <p>外卖</p>
+              </router-link>
           </div>
       </div>
       <div class='news'>
@@ -65,19 +68,21 @@
       <div class='recommend'>
           <div class='title'>
               <div class='l'>推荐菜品</div>
-              <div class='r'>更多</div>
+              <div class='r'> <router-link :to="'/index/recommendList'">
+                      <div>更多</div>
+                    </router-link></div>
           </div>
           <div class='outbox'>
-          <scroller lock-y :scrollbar-x=false>
-      <div class="swipbox"  v-bind:style="{ width: swipboxWidth }">
-        <div class="rec-item" v-for="(item,index) in recomendList" :key="index">
-            <div class='imgbox'>
-                    <img v-bind:src=item.url alt="">
-            </div>
-            <p>{{item.name}}</p>
-       </div>
-      </div>
-    </scroller>
+            <scroller lock-y :scrollbar-x=false>
+              <div class="swipbox"  v-bind:style="{ width: swipboxWidth }">
+                <div class="rec-item" v-for="(item,index) in recomendList" :key="index">
+                    <div class='imgbox'>
+                            <img v-bind:src=item.url alt="">
+                    </div>
+                    <p>{{item.name}}</p>
+              </div>
+              </div>
+            </scroller>
           </div>
       </div>
        <div class='line'></div>

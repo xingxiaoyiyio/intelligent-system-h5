@@ -34,9 +34,12 @@
               </div>
           </div>
         </div>
-        <div class='btn'>
-            确认排队
-        </div>
+        <router-link :to="'/index/QueueDetail'">
+                <div class='btn'>
+                            确认排队
+                </div>
+        </router-link>
+       
     </div>
     </div>
 </template>

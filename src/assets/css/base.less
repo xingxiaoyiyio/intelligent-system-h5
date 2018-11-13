@@ -27,6 +27,15 @@ html,body{
 	display: none
 }
 
+.vux-check-icon > .weui-icon-success:before, .vux-check-icon > .weui-icon-success-circle:before{
+    color: #FA8A29;
+ }
+
+.line{
+    height: 6px;
+    background: #f2f2f2;
+}
+
 .index .vux-header .vux-header-title{
         text-align: left;
         margin:0;
@@ -56,6 +65,86 @@ html,body{
 .menuConfirm   .weui-dialog__btn_primary {
             color: #fff;
                 background: #FA8829
+ }
+ .weui-cells.vux-no-group-title:before{
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid #fff;
+    color: #fff;
+ }
+
+ .specModal{
+    .weui-dialog__bd:first-child {
+        padding: 30px 20px 1.7em;
+        min-height: 150px;
+    }
+    .top{
+        font-size: 17px;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+    font-size: 17px;
+    height: 50px;
+    position: relative;
+    padding-right: 40px;
+    .closed{
+        position: absolute;
+        width: 30px;
+        top:0;
+        height: 30px;
+        text-align: center;
+        display: block;
+        right: 0;
+        img{
+            width: 15px;
+        }
+    }
+    }
+ 
+    .bottom{
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        margin-left: -20px;
+        font-size: 16px;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        border-top: 1px solid #f2f2f2;
+        >div{
+            width: 50%;
+            text-align: center;
+        }
+        .addtoshop{
+            background: #FA8829;
+            color: #fff;
+        }
+    }
+    .specItemsBox{
+        display: flex;
+        margin-bottom: 20px;
+        flex-wrap:wrap ;
+        .specItem{
+            width: 30%;
+            margin-left: 3%;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+        .specItem.active{
+            color: #fff;
+            background: #FA8829
+        }
+        .specItem:first-child{
+            margin-left: 0;
+        }
+      
+    }
  }
 
 

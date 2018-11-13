@@ -1,15 +1,13 @@
 <template>
-    <div class=''>
-          <router-link :to="'/index/keyLogin'">
-                    登录
-           </router-link>
+    <div class='takeOutPayment'>
+        
     </div>
 </template>
 <script>
 import { Group } from "vux";
 export default {
   mounted() {
-    this.$store.commit("UPDATE_PAGE_TITLE", "个人中心");
+    this.$store.commit("UPDATE_PAGE_TITLE", "订单结算");
     this.$store.commit("UPDATE_HEAD", true);
     this.$store.commit("UPDATE_FOOTER", false);
   },

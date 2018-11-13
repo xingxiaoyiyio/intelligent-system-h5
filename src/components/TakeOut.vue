@@ -10,38 +10,6 @@
                 </div>
             </scroller>
         </div>
-        <!-- 确认下单弹框 -->
-        <div v-transfer-dom class='menuConfirm'>
-            <confirm v-model="orderModal"
-            :confirmText="'确认下单'"
-            @on-confirm="onConfirm">
-                <div>
-                    <div class='inline'>
-                        <div>
-                            用餐人数
-                        </div>
-                         <div class='qty'>
-                               <div class='qtyicon' @click="popQty=popQty >0 ? popQty-1 :0">
-                                        <img src="../assets/images/dec.png" alt="">
-                                </div>
-                                <div class='no'>{{popQty}}</div>
-                                <div class='qtyicon'  @click="popQty++">
-                                    <img src="../assets/images/plus.png" alt="">
-                                </div>
-                        </div>
-                    </div>
-                   <div class='inline'>
-                   <div class='scanIcon'>
-                       桌号<img src="../assets/images/scan.png" alt="">
-                   </div>
-                   <div class='tableNo'>
-                       <popup-picker  :data="tableList" v-model="tableNo" :popup-style="{zIndex:5001}"  @on-show="orderModal=false" @on-hide="orderModal=true" ></popup-picker>
-                   </div>
-                    </div>
-
-                </div>
-            </confirm>
-        </div>
         <!-- 选择规格弹框 -->
         <div class='specModal' v-transfer-dom >
              <confirm v-model="specModal" :show-cancel-button="false" :show-confirm-button="false">
@@ -132,7 +100,7 @@
                 <div class='leftNo'>
                     ￥{{titalAmount}}
                 </div>
-                <div class='rightOk' @click="orderModal=true">
+                <div class='rightOk' @click="submit">
                     点好了
                 </div>
             </div>
@@ -171,11 +139,7 @@
             specModal:false,
             titalAmount:"98.00",
             showShoppingList:false,
-            orderModal:false,
             popQty:0,
-            tableList:[['A01','A02','A03','A04']],
-            tableNo:['A02'],
-            showTableList:false,
             activeDish:{name:'蛋炒饭',price:60,spec:['大份','中份','小份'],url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
             shoppingItems:[
                 {name:'红烧茄子',price:23,   url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
@@ -211,6 +175,9 @@
             const obj= {...this.dishList[index]}
             obj.qty=obj.qty -1 < 0 ? 0 : obj.qty -1
             Vue.set(this.dishList, index,obj)
+        },
+        submit(){
+            this.$router.push("/index/takeOutPayment")
         },
         clearShoplist(){
             this.shoppingItems=[];

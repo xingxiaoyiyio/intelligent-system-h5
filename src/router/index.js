@@ -14,6 +14,13 @@ import ShareList from '@/components/ShareList'
 import EvaluateDetail from '@/components/EvaluateDetail'
 import Queue from '@/components/Queue'
 import ShopQueue from '@/components/ShopQueue'
+import QueueDetail from '@/components/QueueDetail'
+import Book from '@/components/Book'
+import BookDetail from '@/components/BookDetail'
+import RecommendList from '@/components/RecommendList'
+import TakeOut from '@/components/TakeOut'
+import TakeOutPayment from '@/components/TakeOutPayment'
+import ShopCity from '@/components/ShopCityList' 
 
 
 Vue.use(Router)
@@ -94,7 +101,42 @@ export default new Router({
 				path: '/index/shopQueue',
 				name: 'shopQueue',
 				component: ShopQueue,
-      }
+      },
+      {
+				path: '/index/queueDetail',
+				name: 'queueDetail',
+				component: QueueDetail,
+      },
+      {
+				path: '/index/book',
+				name: 'book',
+				component: Book,
+	  },
+	  {
+				path: '/index/BookDetail',
+				name: 'bookDetail',
+				component: BookDetail,
+		},
+		{
+			path: '/index/RecommendList',
+			name: 'recommendList',
+			component: RecommendList,
+		},
+		{
+			path: '/index/TakeOut',
+			name: 'takeOut',
+			component: TakeOut,
+		},
+		{
+			path: '/index/TakeOutPayment',
+			name: 'takeOutPayment',
+			component: TakeOutPayment,
+		},
+		{
+			path: '/index/ShopCity',
+			name: 'shopCity',
+			component: ShopCity,
+		}
     ],
     
     }
