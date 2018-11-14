@@ -1,5 +1,8 @@
 <template>
     <div class='shopList'>
+         <router-link :to="'/index/shopCity'">
+            <div class='addrLoc'>当前定位：佛山  <img class='down' src="../assets/images/down.png" alt=""> </div>
+         </router-link>
         <div class='shopItem' v-for="(item,index) in shopList" :key=index>
             <div class='topName'>{{item.name}}<span class='dist'>距您{{item.dist}}</span></div>  
             <div class='time'>营业时间：{{item.work}}</div>  
@@ -35,6 +38,13 @@ export default {
 <style lang='less' scoped>
 
 .shopList{
+    .addrLoc{
+        padding: 10px 20px;
+        color:#333;
+        .down{
+            width: 12px;
+        }
+    }
     .addr{
             padding: 0 20px;
      position: relative;

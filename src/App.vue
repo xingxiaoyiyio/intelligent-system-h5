@@ -5,6 +5,11 @@
 </template>
 
 <script>
+
+import config from '../config/proxyConfig'
+console.log(config)
+
+
 export default {
   name: 'app'
 }

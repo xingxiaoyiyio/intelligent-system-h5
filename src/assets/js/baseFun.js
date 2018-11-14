@@ -2,6 +2,8 @@
 import Vue from 'vue'
 import stores from '../../store/store'
 import { AjaxPlugin } from 'vux'
+import {PREFIX} from '../../config/index'
+
 Vue.use(AjaxPlugin)
 
 let browser={
@@ -72,7 +74,8 @@ const baseFun={
 const baseAjax=function(param){
 //----------------------------------全局请求路径
     let token=baseFun.getQueryString("token");
-    let baseURL='/api';
+  
+    let baseURL=PREFIX;
    
     let defaultParam={
         baseURL:param.baseURL || baseURL,
@@ -98,8 +101,7 @@ const baseAjax=function(param){
       timeout:defaultParam.timeout,
       headers: defaultParam.headers
     }).then(function(response) {
-
-        console.log(response)
+        
          stores.commit('UPDATE_LOADING', false)
          if(param.showError){
             param.success(response.data);

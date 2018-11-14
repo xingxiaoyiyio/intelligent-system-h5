@@ -2,7 +2,7 @@
     <div class='home'>
       <div class='homeTop'>
           <div class='left'></div>
-            <router-link :to="'/index/shopCity'">
+            <router-link :to="'/index/shopList'">
                 <div class='mid'>
                     <span class='loc'></span>
                     <span>碧桂园总部店</span>
@@ -54,14 +54,12 @@
             </div>
            </router-link>
           <swiper auto height="30px" direction="vertical" :interval=2000 class="newsbox" :show-dots="false">
-      <swiper-item v-for="(item,index) in newsList" :key="index">
-          <router-link :to="'/index/newsDetail'">
-                <p class='newsItem'>{{item.title}}</p>
-          </router-link>
+               <swiper-item v-for="(item,index) in newsList" :key="index">
+                <router-link :to="'/index/newsDetail/'+item.id">
+                      <p class='newsItem'>{{item.name}}</p>
+                </router-link>
           </swiper-item>
     </swiper>
-
-          
       <div class='news-right'></div>
       </div>
       <div class='line'></div>
@@ -77,9 +75,9 @@
               <div class="swipbox"  v-bind:style="{ width: swipboxWidth }">
                 <div class="rec-item" v-for="(item,index) in recomendList" :key="index">
                     <div class='imgbox'>
-                            <img v-bind:src=item.url alt="">
+                            <img v-bind:src=item.productIcon alt="">
                     </div>
-                    <p>{{item.name}}</p>
+                    <p>{{item.productName}}</p>
               </div>
               </div>
             </scroller>
@@ -97,17 +95,17 @@
           </div>
           <div class='shareBox'>
             <div  v-for="(item,index) in shareList" :key="index">
-               <router-link :to="'/index/EvaluateDetail'">
+               <router-link :to="'/index/EvaluateDetail/'+item.id">
               <div class='share-item'>
                   <div class='shareimg'>
-                       <img v-bind:src=item.url alt="">
+                       <img v-bind:src=item.productIcon  alt="">
                   </div>
                       <div class='r-dec'>
-                          <p class='name'>{{item.title}}</p>
-                          <div class='sdec'>{{item.dec}}</div>
+                          <p class='name'>{{item.branchName}}</p>
+                          <div class='sdec'>{{item.content}}</div>
                           <div class='rec-dishs'>
                               <div class='ltitle'>推荐菜谱</div>
-                              <div class='rdish'>{{item.reclist}}</div>
+                              <div class='rdish'>{{item.productName}}</div>
                           </div>
                       </div>
                   </div>
@@ -120,9 +118,18 @@
 
 <script>
 import { Swiper, SwiperItem, Scroller } from "vux";
+import {api} from '../config/api'
+
+const {bannerUrl, newsUrl,shareUrl,recomendUrl} = api;
+import BMap from "BMap";
+
 export default {
   mounted() {
     this.loadBanner();
+    this.loadNews();
+    this.loadRecomends();
+    this.getMyLocation();
+    // this.loadShareList();
     this.$store.commit("ACTIVE_TYPE", 1);
     this.$store.commit("UPDATE_HEAD", false);
     this.$store.commit("UPDATE_FOOTER", true);
@@ -134,39 +141,27 @@ export default {
   },
   data() {
     return {
-      imgList: [],
+      imgList: [
+        {
+          url : "/index/newsDetail",
+          img : 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=735113195,958349734&fm=200&gp=0.jpg'
+        }
+      ],
       recomendList: [
         {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          name: "红烧排骨"
-        },
-        {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          name: "海鲜饭"
-        },
-        {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          name: "奶油盖浇饭"
+          productIcon: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
+          productName: "红烧排骨"
         }
       ],
       newsList: [
-        { title: "bgy机器人广州分店开业了" },
-        { title: "优惠播报：每天前10个订单，85折优惠！" }
+        { name: "bgy机器人广州分店开业了",id:1 }
       ],
       shareList: [
         {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          title: "机器人餐厅店铺1",
-          dec:
-            "机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
-          reclist: "酸辣牛肉、红烧排骨、蒜蓉虾"
-        },
-        {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          title: "机器人餐厅店铺1",
-          dec:
-            "机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
-          reclist: "酸辣牛肉、红烧排骨、蒜蓉虾"
+          productIcon: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
+          branchName: "机器人餐厅店铺1",
+          content:"机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
+          productName: "酸辣牛肉、红烧排骨、蒜蓉虾"
         }
       ]
     };
@@ -186,23 +181,70 @@ export default {
     loadBanner() {
       let self = this;
       this.baseAjax({
-        url: "/index/banner",
-        params: {
-          shopid: "8001"
-        },
+        url: bannerUrl,
         success: function(data) {
-          if (data.length) {
-            self.imgList = data.map(item => {
+          console.log(data)
+          if (data.result && data.result.length) {
+            self.imgList = data.result.map(item => {
               let obj = {};
-              obj.url = "javascript:";
-              obj.img = item.imgUrl;
+              obj.url = item.jumpPath || "javascript:";
+              obj.img = item.path;
               return obj;
             });
           }
         }
       });
-    }
+    },
+    loadNews(){
+      let self = this;
+      this.baseAjax({
+        url: newsUrl,
+        success: function(data) {
+          if (data.result && data.result.length) {
+            self.newsList = data.result;
+          }
+        }
+      });
+    },
+    loadRecomends(){
+      let self = this;
+          this.baseAjax({
+            url: recomendUrl,
+            success: function(data) {
+              if (data.result && data.result.length) {
+                self.recomendList = data.result;
+              }
+            }
+       });
+    },
+    loadShareList(){
+      let self = this;
+      this.baseAjax({
+        url: shareUrl,
+        success: function(data) {
+          if (data.result && data.result.length) {
+            self.shareList = data.result;
+          }
+        }
+      })
+      },
+    getMyLocation(){
+          var geolocation = new BMap.Geolocation();
+          geolocation.getCurrentPosition(function(r){
+            console.log(r.point)
+              if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                  var point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
+                  var gc = new BMap.Geocoder();
+                  gc.getLocation(point, function(rs){
+                    var addComp = rs.addressComponents; 
+                    var city = rs.addressComponents.city;
+                    console.log(rs.address);//地址信息
+                  });
+                }
+          })
+    },
   }
+ 
 };
 </script>
 

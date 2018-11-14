@@ -21,6 +21,8 @@ import RecommendList from '@/components/RecommendList'
 import TakeOut from '@/components/TakeOut'
 import TakeOutPayment from '@/components/TakeOutPayment'
 import ShopCity from '@/components/ShopCityList' 
+import OrderDetail from '@/components/OrderDetail' 
+import Evaluate from '@/components/Evaluate' 
 
 
 Vue.use(Router)
@@ -78,7 +80,7 @@ export default new Router({
 				component: NewsList,
       },
       {
-				path: '/index/newsDetail',
+				path: '/index/newsDetail/:id',
 				name: 'newsDetail',
 				component: NewsDetail,
       },
@@ -88,7 +90,7 @@ export default new Router({
 				component: ShareList,
       },
       {
-				path: '/index/evaluateDetail',
+				path: '/index/evaluateDetail/:id',
 				name: 'evaluateDetail',
 				component: EvaluateDetail,
       },
@@ -136,6 +138,16 @@ export default new Router({
 			path: '/index/ShopCity',
 			name: 'shopCity',
 			component: ShopCity,
+		},
+		{
+			path: '/index/orderDetail',
+			name: 'orderDetail',
+			component: OrderDetail,
+		},
+		{
+			path: '/index/evaluate',
+			name: 'evaluate',
+			component: Evaluate,
 		}
     ],
     

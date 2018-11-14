@@ -33,7 +33,8 @@ export default {
       var point = new BMap.Point(113.281957,22.930372); // 创建点坐标
       map.centerAndZoom(point, 12);
       var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function(r){console.log(r.point)
+    geolocation.getCurrentPosition(function(r){
+      console.log(r.point)
         if(this.getStatus() == BMAP_STATUS_SUCCESS){
             var mk = new BMap.Marker(r.point);
             map.addOverlay(mk);//标出所在地
@@ -43,6 +44,7 @@ export default {
             var gc = new BMap.Geocoder();
             gc.getLocation(point, function(rs){
                var addComp = rs.addressComponents; 
+               var city = result.addressComponents.city;
                console.log(rs.address);//地址信息
             });
         }else {

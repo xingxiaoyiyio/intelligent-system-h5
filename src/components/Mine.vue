@@ -1,5 +1,7 @@
 <template>
     <div class=''>
+        <div></div>
+
           <router-link :to="'/index/keyLogin'">
                     登录
            </router-link>
@@ -9,9 +11,8 @@
 import { Group } from "vux";
 export default {
   mounted() {
-    this.$store.commit("UPDATE_PAGE_TITLE", "个人中心");
-    this.$store.commit("UPDATE_HEAD", true);
-    this.$store.commit("UPDATE_FOOTER", false);
+     this.$store.commit("ACTIVE_TYPE", 3);
+    this.$store.commit("UPDATE_FOOTER", true);
   },
   components: {
     Group
