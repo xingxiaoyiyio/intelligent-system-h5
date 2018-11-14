@@ -4,8 +4,8 @@
         <div class='menuTop'>
             <scroller lock-y :scrollbar-x=false>
                 <div class="box1" v-bind:style="{ width: swipboxWidth }">
-                    <div :class="activeMenu === index ?'activeMenu box1-item':'box1-item'"  v-for="(item,index) in menuLevel1" :key="index"  @click="clickMenu(index)">
-                        <span>{{item}}</span>
+                    <div :class="activeMenu === index ?'activeMenu box1-item':'box1-item'"  v-for="(item,index) in menuLevel1" :key="index"  @click="clickMenu(index,item.id)">
+                        <span>{{item.name}}</span>
                     </div>
                 </div>
             </scroller>
@@ -98,7 +98,7 @@
         <scroller class='listBox' lock-x  ref="scrollerEvent">
             <div>
                 <div class='itemOuter'  v-for="(item,index) in dishList" :key="index">
-                    <div class="dishItem" >
+                    <!-- <div class="dishItem" >
                         <div class='img'>
                             <img v-bind:src=item.url alt="">
                         </div>
@@ -117,6 +117,32 @@
                                     </div>
                                     <div class='no'>{{item.qty || 0}}</div>
                                     <div class='qtyicon'  @click="plus(index)">
+                                        <img src="../assets/images/plus.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                     <div class="dishItem" >
+                        <div class='img blankImg'>
+                            <img v-bind:src=item.icon alt="">
+                        </div>
+                        <div class='dishinfo'>
+                            <div class='topInfo'>
+                                <p>{{item.name}}</p>
+                            </div>
+                            <div class='bottomInfo'>
+                                <div class='price'>￥{{item.price}}</div>
+                                <div v-if='item.spec' class='specBox' @click="specModal=true">
+                                    <div class='spec'>选规格 <span>2</span> </div>
+                                </div>
+                                <div v-else class='qty'>
+                                    <div class='qtyicon' @click="updateCart(item,1)">
+                                        <img src="../assets/images/dec.png" alt="">
+                                    </div>
+                                    <div class='no'>{{item.qty || 0}}</div>
+                                    <div class='qtyicon'  @click="updateCart(item,2)">
                                         <img src="../assets/images/plus.png" alt="">
                                     </div>
                                 </div>
@@ -148,11 +174,18 @@
   import {Scroller,Confirm,TransferDomDirective as TransferDom,PopupPicker,Popup} from 'vux'
   import {mapGetters} from 'vuex'
   import Vue from 'vue'
+  import { api } from '../config/api'
+  const { prodCategoryUrl,queryProdByIdUrl ,cartListUrl,updateCartUrl,specListUrl} = api;
+  const productListById = {}
+  const specListById = {}
+
   export default {
     mounted() {
           this.$store.commit('UPDATE_PAGE_TITLE', '点餐')
           this.$store.commit('UPDATE_HEAD', true);
           this.$store.commit('UPDATE_FOOTER', false);
+          this.loadCategory()  //获取菜品种类
+          this.loadCartList()  //购物车列表
       },   
     components: {
        Scroller,
@@ -165,7 +198,9 @@
   },
     data(){
         return {
-            menuLevel1:['美味主食','酒水饮料','粤式点心','传统干锅','麻辣湘菜'],
+            menuLevel1:[
+                {name:'鲁菜',id:'c9b946d6b9264a04b96aad9f44fc0522'}
+            ],
             activeMenu:0,
             totalCount:4,
             specModal:false,
@@ -179,38 +214,111 @@
             activeDish:{name:'蛋炒饭',price:60,spec:['大份','中份','小份'],url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
             shoppingItems:[
                 {name:'红烧茄子',price:23,   url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'椒盐排骨',price:30,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'蛋炒饭',price:60,spec:['大份','中份','小份'],url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0}
+                // {name:'蛋炒饭',price:60,spec:['大份','中份','小份'],url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
             ],
             dishList:[
-                {name:'红烧茄子',price:23,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'椒盐排骨',price:30,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'香辣虾',price:60,price:60,spec:['大份','中份','小份'],url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0},
-                {name:'香辣虾',price:60,url:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:0}
+                // {name:'香辣虾',price:60,price:60,spec:['大份','中份','小份'],icon:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg',qty:1},
+                {name:'香辣虾',price:60,icon:'http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg'}
             ]
         }
      },
      methods:{
+        loadCategory(){
+                let self = this;
+                this.baseAjax({
+                    url: prodCategoryUrl,
+                    success: function(data) {
+                    console.log(data)
+                    if (data.result && data.result.length) {
+                       self.menuLevel1=data.result;
+                       self.loadProductById(self.menuLevel1[0].id)
+                    }
+                    }
+                });
+        },
         onConfirm(){
             console.log('confirm')
         },
-        clickMenu(index){
+        loadCartList(){
+            let self = this;
+            this.baseAjax({
+                url: cartListUrl,
+                data:{
+                    accessToken:''
+                },
+                success: function(data) {
+                     console.log(data)
+                    if (data.result && data.result.length) {
+                      
+                    }
+                }
+            });
+        },
+        clickMenu(index,id){
+            console.log(id)
            this.activeMenu=index;
+           if(!productListById[id]){
+                this.loadProductById(id)
+           }else{
+                self.dishList = productListById[id];
+           }
         },
-        plus(index){
-            const obj= {...this.dishList[index]}
-            obj.qty=obj.qty +1
-            Vue.set(this.dishList, index,obj)
+
+
+
+        loadSpecList(productId){
+              this.baseAjax({
+                url: specListUrl,
+                data:{
+                    productId:productId
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data.result && data.result.length) {
+                       
+                    }
+                }
+            });
         },
-        minus(index){
-            const obj= {...this.dishList[index]}
-            obj.qty=obj.qty -1 < 0 ? 0 : obj.qty -1
-            Vue.set(this.dishList, index,obj)
+
+        updateCart(item,type){
+            console.log(item)
+             if(!item.quantity) item.quantity = 0;
+            item.quantity= type===1 ? item.quantity +1 : item.quantity>1 ? item.quantity-1 : 0;
+              console.log(item)
+            return;
+            let self = this;
+            let postData={
+                accessToken:'',
+                quantity:item.quantity,
+                id:item.productId
+            }
+            this.baseAjax({
+                url: updateCartUrl,
+                data:postData,
+                success: function(data) {
+                    console.log(data)
+                    if (data.result && data.result.length) {
+                       self.loadCartList();
+                    }
+                }
+            });
+        },
+
+        loadProductById(id){
+            let self = this;
+            this.baseAjax({
+                url: queryProdByIdUrl,
+                data:{
+                    categoryId:id
+                },
+                success: function(data) {
+                    if (data.result && data.result.length) {
+                        productListById[id] = data.result;
+                        self.dishList=data.result
+                    }
+                }
+            });
         },
         clearShoplist(){
             this.shoppingItems=[];

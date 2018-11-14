@@ -9,14 +9,16 @@
                     <span class='down'></span>
                 </div>
             </router-link>
-          <div class='right'></div>
+          <router-link :to='"/index/msgCenter"' class='right'>
+          </router-link>
+         
       </div>
       <swiper :list="imgList" auto></swiper>
       <div class='menus'>
                 <div class='entericon'>
                      <router-link :to="'/index/menu'">
                         <div class='menu-icon'>
-                            <img src="../assets/images/home_check.png" alt="">
+                            <img src="../assets/images/menu_icon.png" alt="">
                         </div>
                         <p>点餐</p>
                     </router-link>
@@ -24,7 +26,7 @@
           <div class='entericon'>
              <router-link :to="'/index/shopQueue'">
                 <div class='menu-icon'>
-                    <img src="../assets/images/home_check.png" alt="">
+                    <img src="../assets/images/menu_icon.png" alt="">
                 </div>
                 <p>排号</p>
               </router-link>
@@ -32,7 +34,7 @@
           <div class='entericon'>
               <router-link :to="'/index/book'">
                 <div class='menu-icon'>
-                    <img src="../assets/images/home_check.png" alt="">
+                    <img src="../assets/images/menu_icon.png" alt="">
                 </div>
                 <p>预定</p>
               </router-link>
@@ -40,7 +42,7 @@
           <div class='entericon'>
              <router-link :to="'/index/takeOut'">
                 <div class='menu-icon'>
-                    <img src="../assets/images/home_check.png" alt="">
+                    <img src="../assets/images/menu_icon.png" alt="">
                 </div>
                 <p>外卖</p>
               </router-link>
@@ -60,7 +62,7 @@
                 </router-link>
           </swiper-item>
     </swiper>
-      <div class='news-right'></div>
+         <div class='news-right'></div>
       </div>
       <div class='line'></div>
       <div class='recommend'>
@@ -119,17 +121,17 @@
 <script>
 import { Swiper, SwiperItem, Scroller } from "vux";
 import {api} from '../config/api'
-
 const {bannerUrl, newsUrl,shareUrl,recomendUrl} = api;
+
 import BMap from "BMap";
 
 export default {
   mounted() {
-    this.loadBanner();
-    this.loadNews();
-    this.loadRecomends();
-    this.getMyLocation();
-    // this.loadShareList();
+    this.loadBanner();   //加载banner
+    this.loadNews();     //加载头条
+    this.loadRecomends();   //推荐菜品
+    this.getMyLocation();   //获取本人信息
+    this.loadShareList();   //热门分享
     this.$store.commit("ACTIVE_TYPE", 1);
     this.$store.commit("UPDATE_HEAD", false);
     this.$store.commit("UPDATE_FOOTER", true);
@@ -264,6 +266,7 @@ export default {
 .menus {
   display: flex;
   height: 84px;
+  padding: 0 10px;
   justify-content: space-around;
   p {
     color: #333;
@@ -277,8 +280,8 @@ export default {
   .menu-icon {
     width: 100%;
     img {
-      height: 40px;
-      width: 40px;
+      height: 38px;
+      width: 38px;
     }
   }
 }
@@ -388,6 +391,7 @@ export default {
     overflow: hidden;
     display: flex;
     align-items: center;
+    background: #f2f2f26b;
     img {
       height: 100%;
     }

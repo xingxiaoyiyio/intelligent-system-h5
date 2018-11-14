@@ -23,7 +23,8 @@ import TakeOutPayment from '@/components/TakeOutPayment'
 import ShopCity from '@/components/ShopCityList' 
 import OrderDetail from '@/components/OrderDetail' 
 import Evaluate from '@/components/Evaluate' 
-
+import MsgCenter from '@/components/MsgCenter' 
+import SelfInfo from '@/components/SelfInfo' 
 
 Vue.use(Router)
 
@@ -148,6 +149,16 @@ export default new Router({
 			path: '/index/evaluate',
 			name: 'evaluate',
 			component: Evaluate,
+		},
+		{
+			path: '/index/msgCenter',
+			name: 'msgCenter',
+			component: MsgCenter
+		},
+		{
+			path: '/index/selfInfo',
+			name: 'selfInfo',
+			component: SelfInfo
 		}
     ],
     

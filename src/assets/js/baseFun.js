@@ -2,9 +2,14 @@
 import Vue from 'vue'
 import stores from '../../store/store'
 import { AjaxPlugin } from 'vux'
-import {PREFIX} from '../../config/index'
+import {API_BASEURL} from '../../config/index'
 
 Vue.use(AjaxPlugin)
+
+const ERRORCODE = {
+    500:'请求出错'
+}
+
 
 let browser={
 versions:function(){
@@ -69,13 +74,11 @@ const baseFun={
           }
         }
 }
-
 // 用于全局的ajax请求
 const baseAjax=function(param){
 //----------------------------------全局请求路径
     let token=baseFun.getQueryString("token");
-  
-    let baseURL=PREFIX;
+    let baseURL=API_BASEURL;
    
     let defaultParam={
         baseURL:param.baseURL || baseURL,
@@ -101,7 +104,6 @@ const baseAjax=function(param){
       timeout:defaultParam.timeout,
       headers: defaultParam.headers
     }).then(function(response) {
-        
          stores.commit('UPDATE_LOADING', false)
          if(param.showError){
             param.success(response.data);
@@ -113,7 +115,7 @@ const baseAjax=function(param){
         }
 
         if(!response.data.status){
-            stores.commit('UPDATE_MSG',{type:true,msg:response.data.msg})
+            stores.commit('UPDATE_MSG',{type:true,msg:ERRORCODE[response.data.code]})
             setTimeout(function(){
                 stores.commit('UPDATE_MSG',{type:false,msg:''})
             },3000)
@@ -121,6 +123,9 @@ const baseAjax=function(param){
     }).catch(function(erro){
         stores.commit('UPDATE_LOADING', false)
         stores.commit('UPDATE_MSG',{type:true,msg:'请求出错！'})
+        setTimeout(function(){
+            stores.commit('UPDATE_MSG',{type:false,msg:''})
+        },3000)
     })
 }
 
