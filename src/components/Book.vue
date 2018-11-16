@@ -12,9 +12,9 @@
                 <div class='name'>姓名</div>
                 <div class='nameInput'>  <input class='weui-input' value='Lisav' type="text"></div>
                 <div class='checkIcon'>  
-                <check-icon :value="gender==='m'" @click.native="changeGender('m')"> 男</check-icon>
-                <check-icon :value="gender==='f'" @click.native="changeGender('f')"> 女</check-icon></div>
-            </div>
+                    <check-icon :value="gender==='m'" @click.native="changeGender('m')"> 男</check-icon>
+                    <check-icon :value="gender==='f'" @click.native="changeGender('f')"> 女</check-icon></div>
+                </div>
             <x-input title="手机号码"  v-model='phone'  name="mobile" placeholder="请输入" keyboard="number"></x-input>
         </group>
         <div class='bookBtn'  @click='submitBook'>马上订位</div>

@@ -1,7 +1,7 @@
 
 <template>
   <div class="index" style="height: 100%">
-  <view-box ref="viewbox" :body-padding-top="headShow ? '46px' : '0'" body-padding-bottom="55px">
+  <view-box ref="viewbox" :body-padding-top="headShow ? '46px' : '0'" body-padding-bottom="50px">
         <div  v-show="headShow">
                 <x-header  
                 style="width:100%;position:absolute;left:0;top:0;z-index:100;"
@@ -18,17 +18,17 @@
         <router-view></router-view>
         <!-- 底部tab -->
         <tabbar slot='bottom' v-show="footerShow">
-          <tabbar-item selected link="/index/home">
+          <tabbar-item   @click.native="toMemu('/index/home')">
             <img slot="icon"  v-show="activeType === 1" src="../assets/images/home_check.png">
             <img slot="icon"  v-show="activeType !== 1" src="../assets/images/home.png">
             <span slot="label" v-bind:class="{activeLabel:activeType === 1}">首页</span>
           </tabbar-item>
-          <tabbar-item link="/index/order">
+          <tabbar-item    @click.native="toMemu('/index/order')">
             <img slot="icon"  v-show="activeType === 2" src="../assets/images/order_check.png">
             <img slot="icon"  v-show="activeType !== 2" src="../assets/images/order.png">
             <span slot="label" v-bind:class="{activeLabel:activeType ===2}">订单</span>
           </tabbar-item>
-          <tabbar-item link="/index/mine">
+          <tabbar-item   @click.native="toMemu('/index/mine')">
             <img slot="icon"  v-show="activeType === 3" src="../assets/images/mine_check.png">
             <img slot="icon"  v-show="activeType !== 3" src="../assets/images/mine.png">
             <span slot="label" v-bind:class="{activeLabel:activeType === 3}">我的</span>
@@ -52,7 +52,12 @@ export default {
      
     }
   },
-
+  methods:{
+    toMemu(route){
+      console.log(route)
+       this.$router.push({path: route});
+    }
+  },
  mounted() {
      this.$store.commit('UPDATE_HEAD', false);
 	},

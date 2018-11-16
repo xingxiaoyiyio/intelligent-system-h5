@@ -4,15 +4,15 @@
                <div  v-for="(item,index) in shareList" :key="index">
                <router-link :to="'/index/EvaluateDetail'">
               <div class='share-item'>
-                  <div class='shareimg'>
-                       <img v-bind:src=item.url alt="">
+                  <div class='shareimg blankImg'>
+                       <img v-bind:src=item.branchIcon alt="">
                   </div>
                   <div class='r-dec'>
-                      <p class='name'>{{item.title}}</p>
-                      <div class='sdec'>{{item.dec}}</div>
+                      <p class='name'>{{item.branchName}}</p>
+                      <div class='sdec'>{{item.content}}</div>
                       <div class='rec-dishs'>
                           <div class='ltitle'>推荐菜谱</div>
-                          <div class='rdish'>{{item.reclist}}</div>
+                          <div class='rdish'>{{item.productName}}</div>
                       </div>
                   </div>
               </div>
@@ -23,34 +23,35 @@
 </template>
 <script>
 import { Group } from "vux";
+import {api} from '../config/api'
+
+const {shareUrl} = api;
 export default {
   mounted() {
     this.$store.commit("UPDATE_PAGE_TITLE", "热门分享");
     this.$store.commit("UPDATE_HEAD", true);
     this.$store.commit("UPDATE_FOOTER", false);
+    this.loadShareList()
   },
   components: {
     Group
   },
-  methods: {},
+  methods: {
+      loadShareList(){
+      let self = this;
+      this.baseAjax({
+        url: shareUrl,
+        success: function(data) {
+          if (data.result) {
+            self.shareList = data.result;
+          }
+        }
+      })
+      },
+  },
   data() {
     return {
-      shareList: [
-        {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          title: "机器人餐厅店铺1",
-          dec:
-            "机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
-          reclist: "酸辣牛肉、红烧排骨、蒜蓉虾"
-        },
-        {
-          url: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
-          title: "机器人餐厅店铺2",
-          dec:
-            "机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
-          reclist: "酸辣牛肉、红烧排骨、蒜蓉虾"
-        }
-      ]
+      shareList: []
     };
   }
 };

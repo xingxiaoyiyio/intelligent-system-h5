@@ -20,5 +20,11 @@ export const MINE_INFO='MINE_INFO';
 //tab页切换
 export const ACTIVE_TYPE='ACTIVE_TYPE';
 
+//我的当前位置
+export const MY_LOCATION='MY_LOCATION';
+
+//当前门店信息
+export const SHOP_INFO='SHOP_INFO';
+
 
 

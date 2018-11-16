@@ -13,6 +13,7 @@ import './assets/css/bgstyle.less'
 //注册全局函数和全局常量
 Vue.prototype.baseFun=Base.baseFun;  //-----注册到vue的全局，方便各个组件和页面js调用公共函数
 Vue.prototype.baseAjax=Base.baseAjax;//-----将封装的ajax请求函数注册到vue的全局 
+Vue.prototype.constData=Base.constData;//-----全局常量 
 
 Vue.use(VueRouter)
 

@@ -23,5 +23,11 @@ export default{
 	},
 	ACTIVE_TYPE:({commit})=>{
 		commit(data.ACTIVE_TYPE)
+	},
+	MY_LOCATION:({commit})=>{
+		commit(data.MY_LOCATION)
+	},
+	SHOP_INFO:({commit})=>{
+		commit(data.SHOP_INFO)
 	}
 }

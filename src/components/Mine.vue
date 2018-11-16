@@ -6,28 +6,34 @@
         </div>
         <p class='name'>Lisav   <span class='score'>我的积分100</span> </p>
         <div class='selfMenu'>
-            <div class='menuItem'> 
-                <router-link :to='"/index/selfInfo"'>
-                    <img  class='icon' src="../assets/images/selfInfo.png" alt="">  
-                    个人信息
+            <router-link :to='"/index/selfInfo"'>
+                <div class='menuItem'> 
+                        <img  class='icon' src="../assets/images/selfInfo.png" alt="">  
+                        个人信息
+                        <img  class='right' src="../assets/images/right.png" alt="">
+                </div>
+             </router-link>
+             <router-link :to='"/index/selfInfo"'>
+                <div class='menuItem'> 
+                    <img  class='icon' src="../assets/images/service.png" alt="">  
+                    客户服务
                     <img  class='right' src="../assets/images/right.png" alt="">
-                </router-link>
-            </div>
-            <div class='menuItem'> 
-                <img  class='icon' src="../assets/images/service.png" alt="">  
-                客户服务
-                <img  class='right' src="../assets/images/right.png" alt="">
-            </div>
-            <div class='menuItem'> 
-                <img  class='icon' src="../assets/images/q&a.png" alt="">  
-                帮助与反馈
-                <img  class='right' src="../assets/images/right.png" alt="">
-            </div>
-            <div class='menuItem'> 
-                <img  class='icon' src="../assets/images/q&a.png" alt="">  
-                版本信息
-                <span  class='version'>V1.0.0</span>
-            </div>
+                </div>
+             </router-link>
+            <router-link :to='"/index/selfInfo"'>
+              <div class='menuItem'> 
+                  <img  class='icon' src="../assets/images/q&a.png" alt="">  
+                  帮助与反馈
+                  <img  class='right' src="../assets/images/right.png" alt="">
+              </div>
+            </router-link>
+             <router-link :to='"/index/selfInfo"'>
+                <div class='menuItem'> 
+                    <img  class='icon' src="../assets/images/q&a.png" alt="">  
+                    版本信息
+                    <span  class='version'>V1.0.0</span>
+                </div>
+              </router-link>
         </div>
              <div class='loginout'>退出登录</div>
     </div>
@@ -106,6 +112,11 @@ export default {
       margin: 40px auto 0 auto
 
     }
+    .selfMenu{
+      a{
+            color:#333;
+       }
+    }
     .menuItem{
       height: 40px;
       line-height: 40px;
@@ -113,7 +124,7 @@ export default {
       font-size: 16px;
       position: relative;
       border-bottom: 1px solid #f2f2f2;
-      color:#333;
+    
       img{
         position: absolute;
         width: 16px;

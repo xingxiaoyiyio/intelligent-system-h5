@@ -41,7 +41,9 @@ export default {
     Tab,
     TabItem
   },
-  methods: {},
+  methods: {
+    
+  },
   data() {
     return {
       menu: ["点餐", "排号", "预定", "外卖", "全部订单"],

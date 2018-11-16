@@ -10,6 +10,11 @@ const ERRORCODE = {
     500:'请求出错'
 }
 
+const constData={
+    defaultCityCode:'440600',   //默认定位佛山
+    defaultCityName:'佛山'   //默认定位佛山
+}
+
 
 let browser={
 versions:function(){
@@ -114,18 +119,18 @@ const baseAjax=function(param){
             param.success(response.data.data)
         }
 
-        if(!response.data.status){
-            stores.commit('UPDATE_MSG',{type:true,msg:ERRORCODE[response.data.code]})
-            setTimeout(function(){
-                stores.commit('UPDATE_MSG',{type:false,msg:''})
-            },3000)
-        }
+        // if(!response.data.status){
+        //     stores.commit('UPDATE_MSG',{type:true,msg:ERRORCODE[response.data.code]})
+        //     setTimeout(function(){
+        //         stores.commit('UPDATE_MSG',{type:false,msg:''})
+        //     },3000)
+        // }
     }).catch(function(erro){
         stores.commit('UPDATE_LOADING', false)
-        stores.commit('UPDATE_MSG',{type:true,msg:'请求出错！'})
-        setTimeout(function(){
-            stores.commit('UPDATE_MSG',{type:false,msg:''})
-        },3000)
+        // stores.commit('UPDATE_MSG',{type:true,msg:'请求出错！'})
+        // setTimeout(function(){
+        //     stores.commit('UPDATE_MSG',{type:false,msg:''})
+        // },3000)
     })
 }
 
@@ -133,7 +138,8 @@ const baseAjax=function(param){
 //导出模块
 export default {
   baseFun,
-  baseAjax
+  baseAjax,
+  constData
 }
 
 

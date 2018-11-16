@@ -3,9 +3,9 @@
     <div class='map' id="allmap"></div>
     <div class='detail'>
         <div class='info'>
-            <p class='title'>机器人餐厅1(碧桂园总部店)<span>距离15km</span> </p>
-            <p class='dec'>营业： 00:00-23:00</p>
-            <p class='dec addr'>地址： 佛山市顺德区北窖镇顺德碧桂园大道1号   <span class='phone'><img src="../assets/images/phone.png" alt=""></span>   </p>
+            <p class='title'>{{shopItem.name}}<span>距离{{shopItem.distance}}km</span> </p>
+            <p class='dec'>营业： {{shopItem.work}}</p>
+            <p class='dec addr'>地址： {{shopItem.address}} <span class='phone'><img src="../assets/images/phone.png" alt=""></span>   </p>
             <p class='dec'>等位： 12桌【小桌】8桌【中桌】10【大桌】</p>
         </div>
         <div class='route'>查看路线</div>
@@ -19,38 +19,40 @@ export default {
     this.$store.commit("UPDATE_PAGE_TITLE", "门店详情");
     this.$store.commit("UPDATE_HEAD", true);
     this.$store.commit("UPDATE_FOOTER", false);
-     this.ready();
+    this.ready();
   },
   data() {
     return {
-      userlocation: { lng: "", lat: "" }
     };
   },
   methods: {
     ready() {
       var th = this;
-      var map = new BMap.Map("allmap");
-      var point = new BMap.Point(113.281957,22.930372); // 创建点坐标
+      let lat=this.shopItem.longitude,lng=this.shopItem.latitude;
+      const map = new BMap.Map("allmap");
+      if(!lat || !lng){
+        lat=113.281957;
+        lng=22.930372;
+      }
+      const point = new BMap.Point(lat,lng); // 创建点坐标
       map.centerAndZoom(point, 12);
-      var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function(r){
-      console.log(r.point)
-        if(this.getStatus() == BMAP_STATUS_SUCCESS){
-            var mk = new BMap.Marker(r.point);
-            map.addOverlay(mk);//标出所在地
-            map.panTo(r.point);//地图中心移动
-            
-            var point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
-            var gc = new BMap.Geocoder();
-            gc.getLocation(point, function(rs){
-               var addComp = rs.addressComponents; 
-               var city = result.addressComponents.city;
-               console.log(rs.address);//地址信息
-            });
-        }else {
-            alert('failed'+this.getStatus());
-        }        
-    },{enableHighAccuracy: true})
+
+      const greenIcon = new BMap.Icon("./src/assets/images/map-red.png", new BMap.Size(134, 130), {
+          offset: new BMap.Size(0, 0), // 指定定位位置
+          imageOffset: new BMap.Size(0, 0) // 设置图片偏移
+      });
+      const marker = new BMap.Marker(point,{icon: greenIcon});
+          map.addOverlay(marker);//标出所在地
+    }
+  },
+  computed:{
+    shopItem(){
+         if(this.$route.query){
+            return this.$route.query.item || {}
+         }else{
+            return {}
+         }
+        
     }
   },
   created() {

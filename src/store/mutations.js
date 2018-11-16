@@ -5,7 +5,9 @@ import {
 	UPDATE_PAGE_TITLE,
 	UPDATE_MSG,
 	MINE_INFO,
-	ACTIVE_TYPE
+	ACTIVE_TYPE,
+	SHOP_INFO,
+	MY_LOCATION
 } from './data'
 
 const state={
@@ -17,6 +19,8 @@ const state={
 	showMsgCtn:'',
 	trainerInfo:'',
 	activeType:1,
+	mylocation:{},
+	shopInfo:{},
 	route:''
 };
 
@@ -53,6 +57,14 @@ const mutations={
 		state.activeType=type;
 	},
 
+	[MY_LOCATION](state,item){
+		state.mylocation=item
+	},
+
+	[SHOP_INFO](state,item){
+		state.shopInfo=item
+	}
+
 
 };
 
@@ -80,7 +92,15 @@ const getters={
 	},
 	activeType(state){
 		return state.activeType;
+	},
+	mylocation(state){
+		return state.mylocation
+	},
+	shopInfo(state){
+		console.log(state)
+		return state.shopInfo
 	}
+
 };
 
 const setters={

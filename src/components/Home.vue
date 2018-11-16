@@ -1,11 +1,11 @@
 <template>
-    <div class='home'>
+    <div class='home' :style="{height: height}">
       <div class='homeTop'>
           <div class='left'></div>
             <router-link :to="'/index/shopList'">
                 <div class='mid'>
                     <span class='loc'></span>
-                    <span>碧桂园总部店</span>
+                    <span>{{shopInfo.name || '选取餐厅'}}</span>
                     <span class='down'></span>
                 </div>
             </router-link>
@@ -96,11 +96,10 @@
               </div>
           </div>
           <div class='shareBox'>
-            <div  v-for="(item,index) in shareList" :key="index">
-               <router-link :to="'/index/EvaluateDetail/'+item.id">
+            <div  v-for="(item,index) in shareList" :key="index" @click="toDetail(item.id)">
               <div class='share-item'>
                   <div class='shareimg'>
-                       <img v-bind:src=item.productIcon  alt="">
+                       <img v-bind:src=item.branchIcon  alt="">
                   </div>
                       <div class='r-dec'>
                           <p class='name'>{{item.branchName}}</p>
@@ -111,7 +110,6 @@
                           </div>
                       </div>
                   </div>
-                </router-link>
                 </div>
           </div>
         </div>
@@ -121,9 +119,10 @@
 <script>
 import { Swiper, SwiperItem, Scroller } from "vux";
 import {api} from '../config/api'
-const {bannerUrl, newsUrl,shareUrl,recomendUrl} = api;
-
 import BMap from "BMap";
+
+const {bannerUrl, newsUrl,shareUrl,recomendUrl,searchShopList} = api;
+import { mapGetters } from 'vuex'
 
 export default {
   mounted() {
@@ -135,6 +134,8 @@ export default {
     this.$store.commit("ACTIVE_TYPE", 1);
     this.$store.commit("UPDATE_HEAD", false);
     this.$store.commit("UPDATE_FOOTER", true);
+    this.height = `${(window.innerHeight - 46 - 53)}'px'`;
+    this.route=this.$route.name
   },
   components: {
     Swiper,
@@ -143,6 +144,8 @@ export default {
   },
   data() {
     return {
+      height:'auto',
+      route:'',
       imgList: [
         {
           url : "/index/newsDetail",
@@ -162,6 +165,7 @@ export default {
         {
           productIcon: "http://pic25.photophoto.cn/20121128/0042040254149743_b.jpg",
           branchName: "机器人餐厅店铺1",
+          id:1,
           content:"机器人餐厅体验太棒了~，吃得非常愉快，最喜欢可爱的迎宾小智了看就看健康健康就",
           productName: "酸辣牛肉、红烧排骨、蒜蓉虾"
         }
@@ -170,6 +174,9 @@ export default {
   },
 
   computed: {
+      ...mapGetters([
+      'shopInfo'
+    ]),
     swipboxWidth() {
       const width =
         this.recomendList.length * 148 > window.innerWidth - 30
@@ -197,6 +204,9 @@ export default {
         }
       });
     },
+    toDetail(id){
+     this.$router.push({path:  '/index/EvaluateDetail/'+id});
+    },
     loadNews(){
       let self = this;
       this.baseAjax({
@@ -219,6 +229,27 @@ export default {
             }
        });
     },
+    loadBranchList(point={}){
+      let self = this;
+      console.log(this.shopInfo)
+        //  if(this.shopInfo)  return;
+      const postData={
+          longitude:point.lng,
+          latitude:point.lat
+      }
+      if(!postData.longitude || !postData.latitude){
+          postData.cityCode=this.constData.defaultCityCode    //默认定位佛山
+      }
+      this.baseAjax({
+        url: searchShopList,
+        params:postData,
+        success: function(data) {
+          if (data.result) {
+             self.$store.commit('SHOP_INFO', data.result [0] || {})
+          }
+        }
+      });
+    },
     loadShareList(){
       let self = this;
       this.baseAjax({
@@ -231,18 +262,24 @@ export default {
       })
       },
     getMyLocation(){
-          var geolocation = new BMap.Geolocation();
+          const geolocation = new BMap.Geolocation();
+          const self = this;
           geolocation.getCurrentPosition(function(r){
             console.log(r.point)
               if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                  var point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
-                  var gc = new BMap.Geocoder();
+                  const point = new BMap.Point(r.point.lng,r.point.lat);//用所定位的经纬度查找所在地省市街道等信息
+                  self.loadBranchList(r.point)
+                  const gc = new BMap.Geocoder();
+                  self.$store.commit('MY_LOCATION', {lng:r.point.lng,lat:r.point.lat})
                   gc.getLocation(point, function(rs){
-                    var addComp = rs.addressComponents; 
-                    var city = rs.addressComponents.city;
-                    console.log(rs.address);//地址信息
+                    // const addComp = rs.addressComponents; 
+                    // const city = rs.addressComponents.city;
+                    // console.log(city)
+                     
                   });
                 }
+          },function(){
+             self.loadBranchList()
           })
     },
   }
@@ -251,6 +288,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+.home{
+  margin-bottom: 10px;
+  overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
 .homeTop {
   height: 44px;
   display: flex;

@@ -97,6 +97,8 @@
         <!-- 菜品列表 -->
         <scroller class='listBox' lock-x  ref="scrollerEvent">
             <div>
+                <NoData  v-show=!dishList.length :msg='"暂无菜品"'></NoData>
+                
                 <div class='itemOuter'  v-for="(item,index) in dishList" :key="index">
                     <!-- <div class="dishItem" >
                         <div class='img'>
@@ -175,6 +177,7 @@
   import {mapGetters} from 'vuex'
   import Vue from 'vue'
   import { api } from '../config/api'
+  import NoData from './NoData'
   const { prodCategoryUrl,queryProdByIdUrl ,cartListUrl,updateCartUrl,specListUrl} = api;
   const productListById = {}
   const specListById = {}
@@ -191,11 +194,12 @@
        Scroller,
        PopupPicker,
        Popup,
+       NoData,
        Confirm
     },
       directives: {
-    TransferDom
-  },
+       TransferDom
+     },
     data(){
         return {
             menuLevel1:[
@@ -260,16 +264,14 @@
            if(!productListById[id]){
                 this.loadProductById(id)
            }else{
-                self.dishList = productListById[id];
+               this.dishList = productListById[id]
+               
            }
         },
-
-
-
         loadSpecList(productId){
               this.baseAjax({
-                url: specListUrl,
-                data:{
+                url: specListUrl+'?productId',
+                params:{
                     productId:productId
                 },
                 success: function(data) {
@@ -309,11 +311,11 @@
             let self = this;
             this.baseAjax({
                 url: queryProdByIdUrl,
-                data:{
+                params:{
                     categoryId:id
                 },
                 success: function(data) {
-                    if (data.result && data.result.length) {
+                    if (data.result) {
                         productListById[id] = data.result;
                         self.dishList=data.result
                     }
@@ -331,7 +333,8 @@
 computed:{
     ...mapGetters([
         'headShow',
-        'footerShow'
+        'footerShow',
+        'myloadtion'
         ]),
         swipboxWidth(){
             const  width=this.menuLevel1.length * 80 > window.innerWidth - 30 ? this.menuLevel1.length * 80 : window.innerWidth - 30
